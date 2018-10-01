@@ -1,0 +1,31 @@
+function checkCashRegister(price, cash, cid) {
+  //find the remainder for change value
+  var changeTotal = cash - price;
+  //make empty array for storing change
+  var change = [];
+  var avail;
+  var cashInDrawer = [["PENNY", 1.01],
+   ["NICKEL", 2.05],
+   ["DIME", 3.1],
+   ["QUARTER", 4.25],
+   ["ONE", 90],
+   ["FIVE", 55],
+   ["TEN", 20],
+   ["TWENTY", 60],
+   ["ONE HUNDRED", 100]];
+  function register(status, change) {
+if (changeTotal < cashInDrawer[0]) {
+  var store = cashInDrawer[0] - changeTotal;
+}
+if (changeTotal > cashInDrawer[8]) {
+   return register("INSUFICIENT_FUNDS", []);
+}
+if (changeTotal == cashInDrawer) {
+  return register("CLOSED", [changeTotal]);
+};
+  }
+console.log(cashInDrawer.values())
+  return change;
+}
+
+checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]);
