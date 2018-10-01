@@ -1,31 +1,37 @@
 function checkCashRegister(price, cash, cid) {
   //find the remainder for change value
-  var changeTotal = cash - price;
-  //make empty array for storing change
-  var change = [];
-  var avail;
-  var cashInDrawer = [["PENNY", 1.01],
-   ["NICKEL", 2.05],
-   ["DIME", 3.1],
-   ["QUARTER", 4.25],
-   ["ONE", 90],
-   ["FIVE", 55],
-   ["TEN", 20],
-   ["TWENTY", 60],
-   ["ONE HUNDRED", 100]];
-  function register(status, change) {
-if (changeTotal < cashInDrawer[0]) {
-  var store = cashInDrawer[0] - changeTotal;
+  var change = cash - price;
+  //Have a value for each type of cash
+  var cashValue = [
+    { name: "ONE HUNDRED", val: 100.00},
+    { name: "TWENTY", val: 20.00},
+    { name: "TEN", val: 10.00},
+    { name: "FIVE", val: 5.00},
+    { name: "ONE", val: 1.00},
+    { name: "QUARTER", val: 0.25},
+    { name: "DIME", val: 0.10},
+    { name: "NICKEL", val: 0.05},
+    { name: "PENNY", val: 0.01}
+    ];
+//Creates a drawer object from the cid (cash in drawer) array
+//currentVal represents the cash in drawer (CID) name and value
+//accumulator represents the overall object of the cashValue arrays
+//accumulator.total will store and add progressivly from 0, the total value of the cashRegister
+ var cashRegister = cid.reduce(function(accumulator, currentVal) {
+   console.log(currentVal[1])
+   accumulator.total += currentVal[1];
+   accumulator[currentVal[0]] = currentVal[1];
+   return accumulator;
+ }, {total: 0});
+//If insufficient funds
+if (cashRegister.total < change) {
+   return { status: "INSUFFICIENT_FUNDS", change: [] };
 }
-if (changeTotal > cashInDrawer[8]) {
-   return register("INSUFICIENT_FUNDS", []);
+//If exact change is requested
+if (cashRegister === change) {
+  return { status: "CLOSED", change: cid };
 }
-if (changeTotal == cashInDrawer) {
-  return register("CLOSED", [changeTotal]);
-};
+ return change;
   }
-console.log(cashInDrawer.values())
-  return change;
-}
 
 checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]);
