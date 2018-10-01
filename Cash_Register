@@ -34,7 +34,7 @@ if (cashRegister.total < change) {
 }
 
 //If exact change is requested
-if (cashRegister === change) {
+if (cashRegister.total === change) {
  output.status = "CLOSED";
  output.change = cid;
  return output;
