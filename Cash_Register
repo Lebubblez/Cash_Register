@@ -11,15 +11,16 @@
    { name: "PENNY", val: 0.01}
    ];
 function checkCashRegister(price, cash, cid) {
-
  //find the remainder for change value
  var change = cash - price;
-
+ //output variable made for status and change
+ var output = { status: null, change: [] };
 //Creates a drawer object from the cid (cash in drawer) array
 //currentVal represents the cash in drawer (CID) name and value
 //accumulator represents the overall object of the cashValue arrays
 //accumulator.total will store and add progressivly from 0, the total value of the cashRegister
-var cashRegister = cid.reduce(function(accumulator, currentVal) {
+var cashRegister = cid.reduce(
+  function(accumulator, currentVal) {
   accumulator.total += currentVal[1];
   //currentVal[1] represents the currency value in drawer, currentVal[0] represents the names of currency
   accumulator[currentVal[0]] = currentVal[1];
@@ -28,17 +29,21 @@ var cashRegister = cid.reduce(function(accumulator, currentVal) {
 
 //If insuficient funds
 if (cashRegister.total < change) {
-  return { status: "INSUFFICIENT_FUNDS", change: [] };
+  output.status = "INSUFFICIENT_FUNDS";
+  return output;
 }
 
 //If exact change is requested
 if (cashRegister === change) {
- return { status: "CLOSED", change: cid };
+ output.status = "CLOSED";
+ output.change = cid;
+ return output;
 }
 
 //Creates an object from the cashValue and create a loop to go through the array
-//currentVal represents one of the currency and its value
-var changeArr = cashValue.reduce(function(accumulator, currentVal) {
+//currentVal represnts one of the currencys and its value
+var changeArr = cashValue.reduce(
+ function(accumulator, currentVal) {
  var value = 0;
  //While there is money available for this currency, & there is more change or equal to that of the currency
 while(cashRegister[currentVal.name] > 0 && change >= currentVal.val) {
@@ -51,7 +56,7 @@ while(cashRegister[currentVal.name] > 0 && change >= currentVal.val) {
 }
 //If there is change (value) > 0, then add the cashValue name & change to output
 if (value > 0) {
- accumulator.push([currentVal.name, value ]);
+ accumulator.push([currentVal.name, value]);
 }
 //returns current change
 return accumulator;
@@ -61,9 +66,11 @@ return accumulator;
 
 //if there is nothing in the changeArr or there is leftover change, insufficient funds will be returned
 if (changeArr.length < 1 || change > 0) {
- return { status: "INSUFFICIENT_FUNDS", change: [] };
+ output.status = "INSUFFICIENT_FUNDS";
+ return output;
 }
-
-return { status: "OPEN", changeArr};
+output.status = "OPEN";
+output.change = changeArr;
+return output;
  }
-checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]);
+console.log(checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]))
